@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tower</title>\
+</head>
+<body>
+  <canvas id = "canvas" width = "940" height = "940"></canvas>
+  <script>
+Player = function(name, gold) {
+	this.name = name;
+	this.gold = gold;
+	this.towers = [];
+};
+
+Player.prototype.add_tower = function(tower) {
+	this.towers.push(tower);
+}
+
+Player.prototype.attack = function (my_tower_index, other_player, other_tower_index) {
+	this.towers[my_tower_index].attack(other_player.towers[other_tower_index]);
+}
+
+
+////////////////////////
+// Basic Tower Constructor 	
+
+Tower = function(attack_strength, defense_strength) {
+    this.attack_strength = attack_strength;
+    this.defense_strength = defense_strength;
+}
+
+Tower.prototype.attack = function(other_tower) {
+   if (other_tower.defense_strength <= 0) {
+		console.log("this tower has been destroyed. no no");
+	} else {
+    	other_tower.defense_strength -= this.attack_strength;
+	}
+}
+
+/////////////////////////
+// SuperTower Constructor
+SuperTower = function(attack_strength, defense_strength) {
+    Tower.call(this, attack_strength, defense_strength);
+}
+
+// SuperTower is based on Regular Tower
+SuperTower.prototype = new Tower();
+// To construct a SuperTower, we call SuperTower.
+SuperTower.prototype.constructor = SuperTower;
+// SuperTowers do double attack damage.
+SuperTower.prototype.attack = function(other_tower) {
+	if (this.defense_strength < 1) {
+		console.log("this tower has been destroyed. no no");
+	} else {
+    other_tower.defense_strength -= (2 * this.attack_strength);
+	}
+}
+
+/////////////////////////
+// MageTower Constructor
+MageTower = function() {
+	Tower.call(this, 15, 10);
+}
+// MageTower is based on Regular Tower
+MageTower.prototype = new Tower();
+// to construct a MageTower we call MageTower.
+MageTower.prototype.constructor = MageTower;
+/////////////////////////////
+    ArcherTower = function() {
+		Tower.call(this, 20, 10);
+	}
+ArcherTower.prototype = new Tower();
+ArcherTower.prototype.constructor = ArcherTower;
+  </script>
+</body>
+</html>
